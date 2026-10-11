@@ -3,6 +3,9 @@ import { check, type Update, type DownloadEvent } from '@tauri-apps/plugin-updat
 import { relaunch } from '@tauri-apps/plugin-process';
 import { openExternalUrl } from '@/common/api';
 import { useToast, type ToastPlacement } from '@/common/toast';
+import tauriConfig from '../../../src-tauri/tauri.conf.json';
+
+export const updatesEnabled = tauriConfig.plugins.updater.endpoints.length > 0;
 
 const UPDATE_CHECK_INTERVAL = 24 * 60 * 60 * 1000;
 const UPDATE_CHECK_KEY = 'lap_last_update_check';
@@ -72,7 +75,7 @@ export function useAppUpdater(localeMsg: Ref<any>, options: AppUpdaterOptions = 
   });
   const releaseNoteUrl = computed(() => {
     if (!releaseNoteVersion.value) return '';
-    return `https://github.com/julyx10/lap/releases/tag/v${releaseNoteVersion.value}`;
+    return `https://github.com/xfhg/ss/releases/tag/v${releaseNoteVersion.value}`;
   });
   const downloadProgressLabel = computed(() => {
     if (downloadPercent.value === null) {
@@ -191,6 +194,7 @@ export function useAppUpdater(localeMsg: Ref<any>, options: AppUpdaterOptions = 
   }
 
   async function checkForUpdates(manual = false) {
+    if (!updatesEnabled) return;
     if (isCheckingUpdate.value || isInstallingUpdate.value) return;
 
     if (!manual) {

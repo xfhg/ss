@@ -7,7 +7,7 @@
       @mouseleave="hideTooltip"
     >
       <div
-        class="btn btn-ghost btn-square rounded-box border-0 focus:outline-none shadow-none! flex flex-col text-base-content/70 hover:text-base-content"
+        class="btn btn-ghost btn-square rounded-box border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-none! flex flex-col text-base-content/70 hover:text-base-content"
         :class="[
           buttonClasses,
           {
@@ -19,6 +19,7 @@
           }
         ]"
         role="button"
+        :aria-label="text || tooltip || undefined"
         :aria-disabled="disabled"
         :tabindex="disabled ? -1 : 0"
         @click="handleClick"

@@ -79,7 +79,8 @@
     </div>
 
     <!-- updates -->
-    <div class="w-full max-w-lg rounded-box p-2 space-y-2 bg-base-300/30 border border-base-content/5 shadow-sm">
+    <p v-if="!updatesEnabled" class="text-sm text-base-content/60">{{ $t('updates_not_configured') }}</p>
+    <div v-else class="w-full max-w-lg rounded-box p-2 space-y-2 bg-base-300/30 border border-base-content/5 shadow-sm">
       <div class="flex items-center gap-2 text-base-content/30">
         <span class="font-bold uppercase text-[10px] tracking-widest">{{ $t('settings.about.section_updates') }}</span>
       </div>
@@ -116,7 +117,7 @@
 import { computed, ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getPackageInfo, getBuildTime } from '@/common/api';
-import { useAppUpdater } from '@/common/updater';
+import { useAppUpdater, updatesEnabled } from '@/common/updater';
 import { config } from '@/common/config';
 import { IconGithub, IconLink, IconLock, IconFocus } from '@/common/icons';
 import iconLogo from '@/assets/images/icon.png';
@@ -139,12 +140,12 @@ const displayVersion = computed(() => {
 });
 const privacyUrl = computed(() => {
   const repo = packageInfo.value.repository || '';
-  if (!repo) return 'https://github.com/julyx10/lap/blob/main/PRIVACY.md';
+  if (!repo) return 'https://github.com/xfhg/ss/blob/main/PRIVACY.md';
   return repo.endsWith('/') ? `${repo}blob/main/PRIVACY.md` : `${repo}/blob/main/PRIVACY.md`;
 });
 const issuesUrl = computed(() => {
   const repo = packageInfo.value.repository || '';
-  if (!repo) return 'https://github.com/julyx10/lap/issues';
+  if (!repo) return 'https://github.com/xfhg/ss/issues';
   return repo.endsWith('/') ? `${repo}issues` : `${repo}/issues`;
 });
 const { locale, messages } = useI18n();

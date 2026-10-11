@@ -11,7 +11,7 @@
     </transition>
 
     <!-- Title Bar -->
-    <TitleBar v-if="showDesktopTitleBar" titlebar="Lap" viewName="Home" :icon="iconLogo"/>
+    <TitleBar v-if="showDesktopTitleBar" titlebar="SS" viewName="Home" :icon="iconLogo"/>
 
     <!-- Main Content -->
     <div class="flex-1 flex overflow-hidden">
@@ -40,17 +40,19 @@
             class="fixed top-14 min-w-16 bottom-10 z-10 flex flex-col items-center space-y-1" 
             data-tauri-drag-region
           >
-            <div v-for="item in visibleButtons" :key="item.index">
-              <TButton
-                :buttonSize="'large'"
-                :icon="item.icon"
-                text=""
-                :tooltip="(item as any).tooltip || item.text"
-                tooltipPlacement="right"
-                :selected="config.main.sidebarIndex === item.index"
-                :disabled="item.disabled"
-                @click="clickSidebar(item.index)"
-              />
+            <div class="no-scrollbar flex min-h-0 w-full flex-col items-center gap-1 overflow-y-auto py-1">
+              <div v-for="item in visibleButtons" :key="item.index">
+                <TButton
+                  :buttonSize="'large'"
+                  :icon="item.icon"
+                  text=""
+                  :tooltip="(item as any).tooltip || item.text"
+                  tooltipPlacement="right"
+                  :selected="config.main.sidebarIndex === item.index"
+                  :disabled="item.disabled"
+                  @click="clickSidebar(item.index)"
+                />
+              </div>
             </div>
 
             <div class="flex-1"></div>
@@ -206,6 +208,7 @@ const Calendar = defineAsyncComponent(() => import('@/components/Calendar.vue'))
 const Location = defineAsyncComponent(() => import('@/components/Location.vue'));
 const Person = defineAsyncComponent(() => import('@/components/Person.vue'));
 const Camera = defineAsyncComponent(() => import('@/components/Camera.vue'));
+const Shimasu = defineAsyncComponent(() => import('@/components/Shimasu.vue'));
 
 import TitleBar from '@/components/TitleBar.vue';
 import TButton from '@/components/TButton.vue';
@@ -220,6 +223,7 @@ import {
   IconLocation,
   IconPerson,
   IconCamera,
+  IconTerminal,
   IconSearch,
   IconSettings,
   IconDot,
@@ -256,7 +260,7 @@ const checkLibraryEmpty = async () => {
   try {
     const albums = await invoke<any[]>('get_all_albums', { refreshAccessibility: false });
     libraryEmpty.value = (albums?.length ?? 0) === 0;
-    if (libraryEmpty.value) {
+    if (libraryEmpty.value && config.main.sidebarIndex !== SIDEBAR.SHIMASU) {
       config.main.sidebarIndex = SIDEBAR.ALBUM;
     }
   } catch {
@@ -267,7 +271,7 @@ const SETTINGS_BASE_WIDTH = 600;
 const SETTINGS_BASE_HEIGHT = 620;
 
 /// i18n
-const { locale, messages } = useI18n();
+const { locale, messages, t } = useI18n();
 const localeMsg = computed(() => messages.value[locale.value] as any);
 
 const uiStore = useUIStore();
@@ -386,6 +390,7 @@ const buttons = computed(() =>  [
   { index: SIDEBAR.PERSON, icon: IconPerson, component: Person, text: localeMsg.value.sidebar.people, hidden: !config.settings.face.enabled },
   { index: SIDEBAR.LOCATION, icon: IconLocation, component: Location, text: localeMsg.value.sidebar.location },
   { index: SIDEBAR.CAMERA, icon: IconCamera, component: Camera, text: localeMsg.value.sidebar.camera },
+  { index: SIDEBAR.SHIMASU, icon: IconTerminal, component: Shimasu, text: t('shimasu.title') },
 ]);
 
 const activeSidebarButton = computed(() =>
@@ -398,7 +403,7 @@ const leftPanelWidth = computed(() =>
 
 const visibleButtons = computed(() =>
   buttons.value
-    .map((item) => ({ ...item, disabled: libraryEmpty.value && item.index !== SIDEBAR.ALBUM }))
+    .map((item) => ({ ...item, disabled: libraryEmpty.value && item.index !== SIDEBAR.ALBUM && item.index !== SIDEBAR.SHIMASU }))
     .filter(item => !item.hidden)
     .sort((a, b) => a.index - b.index)
 );
@@ -635,7 +640,7 @@ function clickSidebar(index: number) {
   // silently mutate the persisted sidebarIndex and dead-end in a blank pane.
   if (databaseCorrupted.value) return;
   activateMainPanel();
-  if (libraryEmpty.value && index !== SIDEBAR.ALBUM) return;
+  if (libraryEmpty.value && index !== SIDEBAR.ALBUM && index !== SIDEBAR.SHIMASU) return;
   if (config.main.sidebarIndex === index) {
     showPanel.value = !showPanel.value;
   } else {

@@ -7760,6 +7760,12 @@ async function updateContent(force = false, preserveMultiSelection = selectMode.
     return;
   }
 
+  if (newIndex === SIDEBAR.SHIMASU) {
+    contentTitle.value = 'Shimasu';
+    showEmptyContent(requestId);
+    return;
+  }
+
   if(newIndex === SIDEBAR.LIBRARY) {
     switch ((libConfig.library as any).item) {
       case LIB_ITEM.FAV:

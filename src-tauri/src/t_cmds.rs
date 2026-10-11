@@ -1096,7 +1096,7 @@ pub async fn set_desktop_wallpaper(
             .map_err(|error| format!("Failed to start GNOME wallpaper service: {error}"))?;
         if !output.status.success() {
             return Err(
-                "This Linux desktop environment does not support setting wallpapers from Lap"
+                "This Linux desktop environment does not support setting wallpapers from SS"
                     .to_string(),
             );
         }

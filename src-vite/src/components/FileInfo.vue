@@ -438,7 +438,7 @@
               <MapView
                 :lat="fileInfo.gps_latitude ? Number(fileInfo.gps_latitude) : 0"
                 :lon="fileInfo.gps_longitude ? Number(fileInfo.gps_longitude) : 0"
-                :label="fileInfo.geo_name || fileInfo.name || 'Lap'"
+                :label="fileInfo.geo_name || fileInfo.name || 'SS'"
               />
             </div>
           </div>

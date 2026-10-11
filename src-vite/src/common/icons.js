@@ -1,6 +1,7 @@
 // ======================
 // NAVIGATION & ARROW ICONS
 // ======================
+export { default as IconTerminal } from '@/assets/icons/terminal.svg';
 export { default as IconArrowDown } from '@/assets/icons/arrow-down.svg';
 export { default as IconArrowUp } from '@/assets/icons/arrow-up.svg';
 export { default as IconLeft } from '@/assets/icons/arrow-left.svg';

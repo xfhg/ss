@@ -174,7 +174,7 @@ fn report_ai_dependency_error() {
             let url = format!("https://aka.ms/vs/17/release/vc_redist.{}.exe", arch);
             let _ = std::process::Command::new("powershell")
                                 .args(["-NoProfile", "-Command", &format!(
-                                    r#"$wsh = New-Object -ComObject Wscript.Shell; $wsh.Popup('Lap requires the Microsoft Visual C++ Redistributable.`n`nA download page will open in your browser.`nPlease install it, then restart Lap.', 0, 'Lap - Missing Dependency', 0x30); Start-Process '{}'"#,
+                                    r#"$wsh = New-Object -ComObject Wscript.Shell; $wsh.Popup('SS requires the Microsoft Visual C++ Redistributable.`n`nA download page will open in your browser.`nPlease install it, then restart SS.', 0, 'SS - Missing Dependency', 0x30); Start-Process '{}'"#,
                                     url
                                 )])
                                 .stdout(std::process::Stdio::null())

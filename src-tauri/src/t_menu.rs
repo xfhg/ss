@@ -13,7 +13,7 @@ pub fn install_app_menu<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<()> {
     let about_item =
         MenuItemBuilder::with_id("about", format!("About {}", app.package_info().name))
             .build(app)?;
-    let home_item = MenuItemBuilder::with_id("help_homepage", "Lap Home").build(app)?;
+    let home_item = MenuItemBuilder::with_id("help_homepage", "SS Home").build(app)?;
     let release_notes_item =
         MenuItemBuilder::with_id("help_release_notes", "Release Notes").build(app)?;
     let readme_item = MenuItemBuilder::with_id("help_readme", "README").build(app)?;
@@ -88,32 +88,32 @@ pub fn handle_menu_event<R: Runtime>(app: &AppHandle<R>, event: MenuEvent) {
         }
         "help_homepage" => {
             let _ = opener::open(
-                option_env!("CARGO_PKG_HOMEPAGE").unwrap_or("https://julyx10.github.io/lap"),
+                option_env!("CARGO_PKG_HOMEPAGE").unwrap_or("https://github.com/xfhg/ss"),
             );
         }
         "help_release_notes" => {
             let _ = opener::open(format!(
                 "{}/guide/release-notes/v{}.html",
-                option_env!("CARGO_PKG_HOMEPAGE").unwrap_or("https://julyx10.github.io/lap"),
+                option_env!("CARGO_PKG_HOMEPAGE").unwrap_or("https://github.com/xfhg/ss"),
                 env!("CARGO_PKG_VERSION")
             ));
         }
         "help_readme" => {
             let _ = opener::open(format!(
                 "{}/blob/main/README.md",
-                option_env!("CARGO_PKG_REPOSITORY").unwrap_or("https://github.com/julyx10/lap")
+                option_env!("CARGO_PKG_REPOSITORY").unwrap_or("https://github.com/xfhg/ss")
             ));
         }
         "help_privacy" => {
             let _ = opener::open(format!(
                 "{}/blob/main/PRIVACY.md",
-                option_env!("CARGO_PKG_REPOSITORY").unwrap_or("https://github.com/julyx10/lap")
+                option_env!("CARGO_PKG_REPOSITORY").unwrap_or("https://github.com/xfhg/ss")
             ));
         }
         "help_report_issue" => {
             let _ = opener::open(format!(
                 "{}/issues",
-                option_env!("CARGO_PKG_REPOSITORY").unwrap_or("https://github.com/julyx10/lap")
+                option_env!("CARGO_PKG_REPOSITORY").unwrap_or("https://github.com/xfhg/ss")
             ));
         }
         _ => {}
